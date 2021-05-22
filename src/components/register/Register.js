@@ -7,6 +7,7 @@ function Register() {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [name,setName] = useState('');
+    const [type,setType] = useState(1);
 
     const handleEmail = (event) =>{
         setEmail(event.target.value);
@@ -20,8 +21,13 @@ function Register() {
         setName(event.target.value);
     }
 
+    const handleType = (event) =>{
+        setType(event.target.value);
+    }
+
     const submit = async () => {
-        var res = await ApiService.registerAsSeeker(email,password,name);
+
+        var res = await ApiService.registerAsSeeker(email,password,name,type,'ASGADGADGADG','ADGHAFH');
         console.log(res);
     }
 
@@ -30,6 +36,10 @@ function Register() {
             <input value={email} onChange={handleEmail} type="email" placeholder="email" />
             <input value={password} onChange={handlePassword} type="password" placeholder="password" />
             <input value={name} onChange={handleName} type="text" placeholder="name" />
+            <select defaultValue={type} onChange={handleType} name="" id="">
+                <option value="1">Seeker</option>
+                <option value="0">Investor</option>
+            </select>
             <button onClick={submit}>submit</button>
         </div>
     )

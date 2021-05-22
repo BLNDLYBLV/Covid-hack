@@ -6,21 +6,20 @@ import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
 import Profile from './components/profile/Profile'
+import Project from './components/project/Project'
+import { Component } from 'react';
+import Seeker from './components/profile/seeker/Seeker';
+
 
 function App() {
 
   const userState = useSelector(state => state.user);
 
-  const ensureAuth = (route,component) => {
-    return ( userState.session==='' ? (
-      <Route exact path={route}>
-          <Redirect to='/login'  />
-      </Route>
-    ) 
-    : (<Route exact path={route}>
-        {component}
-      </Route>)
-    )
+  console.log(userState.session=='');
+
+  const ensureAuth = (route,Component) => {
+    return ( userState.session=='' ? (<Route component={props => <Redirect to='/' {...props}  />} exact path={route} />) 
+    : (<Route component={props => (route==='*') ? (<Redirect to='/'/>) : (<Component {...props} />)} exact path={route} />))
   }
 
   // const route = (route,component) => {
@@ -37,14 +36,13 @@ function App() {
         {/* {route('/',Home)}
         {route('/login',Login)}
         {route('/register',Register)} */}
-        <Route exact path='/'>
-          <Home/>
-        </Route>
-        <Route exact path='/login'>
-          <Login />
-        </Route>
+        <Route component={props => <Home {...props}/>} exact path='/'/>
+        <Route component={props => <Login {...props}/>} exact path='/login'/>
         <Route exact path='/register'>
           <Register />
+        </Route>
+        <Route exact path='/project/:id'>
+          <Project />
         </Route>
         {ensureAuth('/profile',Profile)}
         {ensureAuth('*',Home)}

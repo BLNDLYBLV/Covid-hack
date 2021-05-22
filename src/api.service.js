@@ -1,9 +1,9 @@
 let axios = require('axios');
 let config = require('./config');
 
-const axiosReq = (route, data) => {
+const axiosReq = (method, route, data) => {
     return axios({
-        method: 'post',
+        method: method,
         url: config.BASE_URL+route,
         headers: {"Content-Type" : "application/json"},
         data: data,
@@ -12,16 +12,19 @@ const axiosReq = (route, data) => {
         return result
     })
     .catch((err)=>{
-        console.log(err);
+        return err;
     })
 }
 
 const APIService = {
-    registerAsSeeker: (email, password, name, type, address, liscense) =>{
-        return axiosReq('auth/register', {email: email, password: password, name: name});
+    registerAsSeeker: (email, password, name, type, address, license) =>{
+        return axiosReq('post','auth/register', {email: email, password: password, name: name, userType: type, address: address, license: license});
     },
     login: async(email, password) =>{
-        return await axiosReq('auth/login', {email: email, password: password});
+        return await axiosReq('post','auth/login', {email: email, password: password});
+    },
+    getUser: async(id) =>{
+        return await axiosReq('get',`user/${id}`);
     }
 }
 

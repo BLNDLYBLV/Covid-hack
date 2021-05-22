@@ -10,7 +10,6 @@ function Navbar() {
     const userState=useSelector(state => state.user);
     const isLoggedIn = (userState.session==='') ? false : true ;
 
-    console.log(userState);
     const logout = () => {
         dispatch(logoutUser());   
     }
@@ -33,11 +32,16 @@ function Navbar() {
                 }
 
                 <div className={`${styles.navbar_ele} ${styles.nav_right}`}>
-                {isLoggedIn ? (<Link to="/profile">Profile</Link>) : (<Link className={styles.nav_pointer} to="/login">
-                        <button className={styles.navbar_btn}>
-                            Login/Register
-                        </button>
-                    </Link>) }
+                {   
+                    isLoggedIn ? (<Link to="/profile">Profile</Link>) 
+                    : (
+                        <Link className={styles.nav_pointer} to="/login">
+                            <button className={styles.navbar_btn}>
+                                Login/Register
+                            </button>
+                       </Link>
+                      )
+                }
                 </div>
                 <div className={`${styles.navbar_ele} ${styles.nav_right}`}>
                     Need oxygen?

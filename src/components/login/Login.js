@@ -25,7 +25,11 @@ function Login() {
         var res = await ApiService.login(email,password);
         console.log(res);
         if(res.status===200){
-            dispatch(setUserState(res.data));
+            console.log(res.data);
+            var res2 = await ApiService.getUser(res.data.user._id);
+            if(res2.status===200){
+                dispatch(setUserState(res2));
+            }
         }
     }
     
