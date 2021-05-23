@@ -6,6 +6,7 @@ import {setUserState} from '../../../actions/user'
 import { useDispatch } from 'react-redux';
 
 import config from '../../../config'
+import CreateProject from '../createProject/CreateProject';
 
 function Seeker(props) {
 
@@ -75,7 +76,7 @@ function Seeker(props) {
                     <div className={styles.seeker_file_link}>
                         <a target="_blank" rel="noopener noreferrer" href={config.BASE_URL+`user/seeker/${fileMap[curStage]}`}>Click here to open file {curStage}</a>
                     </div>
-                    {props.data.seeker.stage==5 ? (<div><button onClick={createProject}>Create project</button></div>) : null}
+                    {props.data.seeker.stage==5 ? (<CreateProject data={props.data}/>) : null}
                 </div>}
                 
             </div>

@@ -53,14 +53,15 @@
 }
 
 .home_feed_body{
-    width: max-content;
-    /* max-width: 80%; */
+    /* width: max-content; */
+    max-width: 90%;
     margin: auto;
     margin-top: 20px;
+    text-align: center;
 }
 
 .home_feed_search {
-    width: 85%;
+    width: 45%;
     margin: 10px;
     /* margin-left: 100px; */
     display: inline-block;
@@ -88,6 +89,6 @@
 }
 
 .home_feed_content{
-    /* margin: auto; */
-    width: max-content;
+    margin: auto;
+    width: 100%;
 }

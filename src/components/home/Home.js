@@ -18,7 +18,7 @@ function Home() {
             headers: {"Content-Type" : "application/json"},
         })
         console.log(data);
-        setProject(data.data.data)
+        setProject(data.data.projects)
     }, [])
 
     console.log(project);
@@ -44,13 +44,11 @@ function Home() {
                     </div>
                 </div>
                 <div className={styles.home_feed_content}>
-                    <div style={{width:'50%'}} >
                         {project.map((data,i)=>{
                             return (
                                 <Card props={data} imgsrc={1} key={i}/>
                             )
                         })}
-                    </div>
                     {/* <div className={styles.home_feed_row}>
                         
                     </div> */}
