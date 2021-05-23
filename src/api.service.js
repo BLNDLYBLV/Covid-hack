@@ -25,6 +25,20 @@ const APIService = {
     },
     getUser: async(id) =>{
         return await axiosReq('get',`user/${id}`);
+    },
+    createProject: async(id,deposit) => {
+        return await axiosReq('post','project/create',{seeker: id,deposit: deposit});
+    },
+    getAllProjects: async() => {
+        return await axiosReq('get','project/all');
+    },
+    sendFile: async(id, formData) => {
+        return await axios.post(config.BASE_URL+`user/seeker/upload/${id}`, formData, {
+            // headers: {
+            //     'Content-Type': 'multipart/form-data'
+            // }
+        })
+        // return await axiosReq('post',`seeker/upload/${id}`);
     }
 }
 

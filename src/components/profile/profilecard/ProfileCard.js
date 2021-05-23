@@ -10,22 +10,27 @@ function ProfileCard() {
     return (
         <div className={styles.prcard_box}>
             <table>
-            <tr className={styles.prcard_img_box}>
-                <td>
+            <tbody>
+            <tr key="main_row" className={styles.prcard_img_box}>
+                <td key='img'>
                     <img src="images/default.jpg" className={styles.prcard_img} alt="" />
                 </td>
-                <td>
-                    <tr>
+                <td key='details'>
+                    <tr key='name'>
                         <h1>Name: {user.user.name}</h1>
                     </tr>
-                    <tr>
-                        <h4>email: {user.user.email}</h4>
+                    <tr key='email'>
+                        <h4>Email: &nbsp; {user.user.email}</h4>
                     </tr>
-                    <tr>
-                        <h4>type: seeker</h4>
+                    <tr key='type'>
+                        <h4>Type: &nbsp; {user.user.userType==1 ? "Seeker" : "Investor"}</h4>
+                    </tr>
+                    <tr key='currentStage'>
+                        <h4>Current stage: &nbsp;{user.seeker.stage==5 ? "Verified" : "Not Verified"}</h4>
                     </tr>
                 </td>
             </tr>
+            </tbody>
             </table>
         </div>
     )

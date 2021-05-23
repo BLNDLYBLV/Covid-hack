@@ -54,7 +54,7 @@
 
 .home_feed_body{
     width: max-content;
-    max-width: 70%;
+    /* max-width: 80%; */
     margin: auto;
     margin-top: 20px;
 }

@@ -15,7 +15,7 @@ function App() {
 
   const userState = useSelector(state => state.user);
 
-  console.log(userState.session=='');
+  // console.log(userState.session=='');
 
   const ensureAuth = (route,Component) => {
     return ( userState.session=='' ? (<Route component={props => <Redirect to='/' {...props}  />} exact path={route} />) 
