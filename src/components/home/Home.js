@@ -1,10 +1,29 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import styles from './home.module.css'
 
 import Card from '../card/Card'
 
+import axios from 'axios'
+
+import config from '../../config'
+
 function Home() {
-    return (
+
+    const [project,setProject] = useState([])
+    
+    useEffect(async ()=>{
+        let data = await axios({
+            method: 'GET',
+            url: config.BASE_URL+'project/all',
+            headers: {"Content-Type" : "application/json"},
+        })
+        console.log(data);
+        setProject(data.data.data)
+    }, [])
+
+    console.log(project);
+
+    return (        
         <div className={styles.home_body}>
             <div className={styles.home_need_content}>
                 <div className={`${styles.home_text} ${styles.home_text_first}`}>
@@ -25,16 +44,21 @@ function Home() {
                     </div>
                 </div>
                 <div className={styles.home_feed_content}>
-                    <div className={styles.home_feed_row}>
-                        <Card imgsrc="1"/>
-                        <Card imgsrc="2"/>
-                        <Card imgsrc="3"/>
+                    <div style={{width:'50%'}} >
+                        {project.map((data,i)=>{
+                            return (
+                                <Card props={data} imgsrc={1} key={i}/>
+                            )
+                        })}
                     </div>
-                    <div className={styles.home_feed_row}>
+                    {/* <div className={styles.home_feed_row}>
+                        
+                    </div> */}
+                    {/* <div className={styles.home_feed_row}>
                         <Card imgsrc="4"/>
                         <Card imgsrc="5"/>
                         <Card imgsrc="1"/>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
