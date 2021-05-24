@@ -26,7 +26,7 @@ function Project(props) {
     return (
         <>
         <div className={styles.project_body}>
-            {(project)? (<div><img src={`${config.BASE_URL}user/seeker/${project.project.image}`} className={styles.project_cover_img} alt="" />
+            {(project)? (<div><img src={project.project.image!='0' ? `${config.BASE_URL}user/seeker/${project.project.image}` : `http://localhost:3000/images/6.jpg`} className={styles.project_cover_img} alt="" />
             <div className={styles.project_content}>
             <p>Company Name: &nbsp; {project.project.name}</p>
             <p>Description: &nbsp; {project.project.description}</p>
