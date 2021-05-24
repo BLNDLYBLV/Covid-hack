@@ -68,7 +68,7 @@ function SeekerPage(props) {
             //Logic to calculate token price at the end of return
             let dateNow = Date.now()
             console.log(typeof dateNow)
-            let timeElapsed = dateNow-2020202020;//Change
+            let timeElapsed = dateNow-sanctionedDate;//Change
             let diffDays = Math.ceil(timeElapsed / (1000 * 60 * 60 * 24)); 
 
             tokenPrice = tokenPrice + (diffDays*6881310000000); //1 rupee equivalent
