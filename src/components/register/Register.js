@@ -60,6 +60,10 @@ function Register() {
 
     return (
         <div className={styles.register_body}>
+            <div style={{display: "inline-block",width: '40%',height: '100%'}}>
+                <img className={styles.register_vector} src="images/login1.png" alt="" />
+            </div>
+            <div style={{display: "inline-block",position:'relative',top:'-10%',marginLeft:'50px'}}>
             <form onSubmit={submit}>
                 <h1>Register</h1>
                 <p>Email &nbsp; &nbsp; <input required value={email} onChange={handleEmail} type="email" placeholder="email" /></p>
@@ -75,6 +79,7 @@ function Register() {
                 <p>Address &nbsp; &nbsp; <textarea required value={address} cols="30" rows="5" onChange={handleAddress} placeholder="Address" /></p>
                 <button type="submit">Submit</button>
             </form>
+            </div>
         </div>
     )
 }
