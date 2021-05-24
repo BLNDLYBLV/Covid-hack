@@ -4,10 +4,20 @@ import Web3 from 'web3'
 import $ from 'jquery'
 import {useSelector} from 'react-redux'
 import styles from './transaction.module.css'
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from 'axios'
+import config from '../../config'
 
-import { Button, Header, Image, Modal } from 'semantic-ui-react'
+
+// import { Button, Header, Image, Modal } from 'semantic-ui-react'
 
 import TruffleContract from '@truffle/contract'
+// import { Dialog } from '@material-ui/core'
 
 function Investor(props) {
     const userState = useSelector(state => state.user);
@@ -16,7 +26,7 @@ function Investor(props) {
     const [isWithdrawAllowed,setWithdraw] = useState(true);
     const [tokensPurchased,setTP] = useState('');
     const [tokensRequired,setTRfunc] = useState('')
-    
+    const [open,setOpen] = useState(false)
 
     const web3 = new Web3("http://localhost:7545")
     const seekerAcc = props.project.project.eth;//Change default value
@@ -92,17 +102,30 @@ function Investor(props) {
             await window.TokenInstance.changeVariables(investorAcc,seekerAcc,projectNo,noOfTokens,{
                 from: investorAcc
             });
-            
+            const addTransaction = await ApiService.addTransaction(seekerAcc,props.user.user.id)
             console.log(window.required_tokens)
         if(noOfTokens==(window.required_tokens)){
 
             await window.TokenInstance.payToSeeker(seekerAcc,(window.totalRequiredTokens),{
                 from: seekerAcc
             })
-
-            console.log("Transfered ether to seeker account from smart contract")
+            axios({
+                method: 'POST',
+                url: config.BASE_URL+'project/sanction',
+                headers: {"Content-Type" : "application/json"},
+                data: {
+                    project: props.project.id
+                }
+            })
+            .then((res)=>{
+                console.log("Transfered ether to seeker account from smart contract")
+                window.required_tokens-=noOfTokens;
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
         }
-        window.required_tokens-=noOfTokens;
+       
         } else{
             console.log("Enter lesser value")
         }
@@ -187,24 +210,54 @@ function Investor(props) {
                
     // })}
     return(
-        <div>
+        <div style={{float: 'right',marginTop:'10px'}}>
+            <Button variant="contained" color="primary" onClick={() => setOpen(true)}>Investor</Button>
+            <Dialog
+           open={open}
+           onClose={() => setOpen(false)}
+           onOpen={() => setOpen(true)}
+           >
+       <DialogTitle>Investor</DialogTitle>
+
+       
+       <DialogContent dividers={'paper'}>
+       <p>
+       <div>
+       <img style={{height:"260px",width:"260px",marginLeft:"140px"}} src={"https://www.reuters.com/resizer/aNcj2Z2FOLjaOBlN8TCOLeF18Hs=/960x0/cloudfront-us-east-2.images.arcpublishing.com/reuters/QFS5CLPP3BNR3HJ2YF3DZRLVRA.jpg"}/>
+
             <ul>
                 <li style={{fontSize: '20px'}}>Tokens owned: {tokensPurchased}</li>
             </ul>
             <ul>
                 <li style={{fontSize: '20px'}}>Tokens required: {tokensRequired}</li>
             </ul>
+            <div style={{display:isBuyAllowed?'block':'none'}}>
             <p style={{fontSize: '18px'}}>Please enter the amount of tokens you wish to purchase</p>
             <span style={{fontSize: '20px'}}>Amount:  </span><input style={{marginTop: '10px',fontSize:'20px'}}  className={styles.fieldIn} id="amount"></input>
             <div style={{float:'right', marginRight: '300px'}}>
-            <Button positive  onClick={buy} style={{display:isBuyAllowed?'block':'none'}}>Buy</Button>
+            <Button variant="contained" onClick={buy} style={{backgroundColor:'green',color:'whitesmoke'}}>Buy</Button>
             </div>
+            </div>
+            
             <p style={{fontSize: '18px',marginTop:'20px'}}>Would you like to withdraw the investment you have made? If yes click withdraw</p>
             <div>
-            <Button color="orange" style={{marginLeft:'150px'}} onClick={withdraw}>Withdraw</Button>
+            <Button variant="contained"  style={{marginLeft:'210px',backgroundColor: "orange",color:'whitesmoke'}} onClick={withdraw}>Withdraw</Button>
             </div>
             
         </div>
+      
+       </p>
+       </DialogContent>
+
+       <DialogActions>
+       <Button negative onClick={() => setOpen(false)}>
+       Cancel
+       </Button>
+       </DialogActions>
+       </Dialog>
+       </div>
+  
+        
     )
 }
 

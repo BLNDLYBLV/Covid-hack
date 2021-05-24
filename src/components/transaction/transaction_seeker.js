@@ -3,7 +3,14 @@ import Web3 from 'web3'
 import $ from 'jquery'
 import {useSelector} from 'react-redux'
 import TruffleContract from '@truffle/contract'
-import { Button, Header, Image, Modal } from 'semantic-ui-react'
+
+// import { Button, Header, Image, Modal } from 'semantic-ui-react'
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function SeekerPage(props) {
     const userState = useSelector(state => state.user);
@@ -12,7 +19,7 @@ function SeekerPage(props) {
     const projectNo = 0;//Change the Project number as variable!!!!!!!!!!!
     // const totalRequiredTokens = 10000;//Change this also
     let tokenPrice= 1000000000000000;
-    
+    const [open,setOpen] = useState(false)
     const sanctionedDate = props.project.project.sanctionedDate;//Change this
 
     const web3 = new Web3("http://localhost:7545")
@@ -30,7 +37,9 @@ function SeekerPage(props) {
             window.tokenInst.deployed().then(async(token)=>{
                 window.TokenInstance = token
                 console.log('Token address is:'+token.address)
-                window.totalRequiredTokens = window.TokenInstance.totalrequired(seekerAcc,projectNo)
+                console.log("Seeker account: "+seekerAcc)
+                window.totalRequiredTokens = await window.TokenInstance.totalrequired(seekerAcc,projectNo)
+                console.log("Initial call: "+window.totalRequiredTokens)
             })
         })
     }
@@ -40,7 +49,7 @@ function SeekerPage(props) {
         window.tokenInst.deployed().then(async(token)=>{
             const required_tokens = $('#setRequired').val()
            await token.setRequired(seekerAcc,projectNo,required_tokens,{
-               from: seekerAcc,
+               from: seekerAcc
                
            })
             const numbertest = await token.required(seekerAcc,projectNo);
@@ -57,16 +66,18 @@ function SeekerPage(props) {
             window.TokenInstance = token;
 
             //Logic to calculate token price at the end of return
-            let timeElapsed = Date.now()-sanctionedDate;
+            let dateNow = Date.now()
+            console.log(typeof dateNow)
+            let timeElapsed = dateNow-2020202020;//Change
             let diffDays = Math.ceil(timeElapsed / (1000 * 60 * 60 * 24)); 
 
             tokenPrice = tokenPrice + (diffDays*6881310000000); //1 rupee equivalent
             console.log("tpp ttejoig")
-            console.log(typeof(sanctionedDate))
+            console.log(typeof diffDays)
             
-            let amount_to_return = window.totalRequiredTokens * tokenPrice
+            let amount_to_return = Number(window.totalRequiredTokens) * tokenPrice
             console.log("amoutn ttejoig")
-            console.log(amount_to_return)
+            console.log("Tokes is: "+window.totalRequiredTokens)
             token.payToSmartContract.sendTransaction({
                     from: seekerAcc,
                     to: token.address,
@@ -86,9 +97,10 @@ function SeekerPage(props) {
                     console.log(uniqueInvestors)
                     for(let j=0;j<uniqueInvestors.length;j++){
                         let valueContributed = await window.TokenInstance.purchased(seekerAcc,projectNo,uniqueInvestors[j])
-                        await window.TokenInstance.payToSeeker(uniqueInvestors[j],(valueContributed),{
-                            from: seekerAcc
+                        await window.TokenInstance.payToSeeker(uniqueInvestors[j],Number(valueContributed),{
+                            from: uniqueInvestors[j]
                         })
+                        await window.TokenInstance.makeZero.call(uniqueInvestors[j],seekerAcc,projectNo)
                     }                    
                 })
             
@@ -97,13 +109,37 @@ function SeekerPage(props) {
 
     useEffect(loadbc,[])
     return(
+        <div style={{float: 'right',marginTop:'10px'}}>
+            <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+            Seeker
+            </Button>
+                 <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+                onOpen={() => setOpen(true)}
+                
+                >
+            <DialogTitle>Seeker</DialogTitle>
+
+            
+            <DialogContent dividers={'paper'}>
+            <p>
+            <div>
+            <img style={{height:"260px",width:"260px",float:"left",marginLeft:"140px"}} src={"https://www.reuters.com/resizer/aNcj2Z2FOLjaOBlN8TCOLeF18Hs=/960x0/cloudfront-us-east-2.images.arcpublishing.com/reuters/QFS5CLPP3BNR3HJ2YF3DZRLVRA.jpg"}/>
+            <p style={{fontSize: '20px',float:"right"}}>Hi {props.user.user.name}, this is your portal to return money back to your investors after the covid wave is over. To return it back to investors along with a certain interest, click <b>Return</b></p>
+            
+            <Button style={{fontSize: '14px',marginLeft: '230px',backgroundColor:'green',float:"left"}} variant="contained" color="secondary" id="returnMoney" onClick={returnMoney}>Return</Button>
+            </div>
+            </p>
+            </DialogContent>
+            <DialogActions>
+            <Button negative onClick={() => setOpen(false)}>
+            Cancel
+            </Button>
+            </DialogActions>
+            </Dialog>
+            </div>
         
-        <div>
-            <p style={{fontSize: '20px'}}>Hi {props.user.user.name}, this is your portal to return money back to your investors after the covid wave is over. To return it back to investors along with a certain interest, click <b>Return</b></p>
-            
-            
-            <Button style={{fontSize: '14px',marginLeft: '170px'}} positive id="returnMoney" onClick={returnMoney}>Return</Button>
-        </div>
     )
 }
 

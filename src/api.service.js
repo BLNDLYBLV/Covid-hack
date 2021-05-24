@@ -40,6 +40,12 @@ const APIService = {
     },
     uploadProjectPhoto: async(id,data) => {
         return await axios.post(config.BASE_URL+`project/upload/${id}`, data, {})
+    },
+    addTransaction: async(investor,eth)=>{
+        return await axios(config.BASE_URL+`/add`,investor,eth)
+    },
+    getProjects: async(id)=>{
+        return await axios.get(config.BASE_URL+`/${id}`)
     }
 }
 

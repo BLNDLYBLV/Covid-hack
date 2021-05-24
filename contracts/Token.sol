@@ -16,6 +16,9 @@ contract Token{
         totalrequired[_owner][_projectNo]+=_needed;
     }
     
+    function makeZero(address _buyer,address _owner,uint256 _projectNo) public{
+            purchased[_owner][_projectNo][_buyer]=0;
+    }
     function withdraw(address _buyer, address _owner, uint256 _projectNo) public{
         required[_owner][_projectNo]+=purchased[_owner][_projectNo][_buyer];
         purchased[_owner][_projectNo][_buyer]=0;

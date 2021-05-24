@@ -18,7 +18,7 @@ function Home() {
             headers: {"Content-Type" : "application/json"},
         })
         console.log(data);
-        setProject(data.data.data)
+        setProject(data.data.projects)
     }, [])
 
     console.log(project);

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
+import {useDispatch,useSelector} from 'react-redux'
+
 import styles from './createProject.module.css'
 import APIService from '../../../api.service'
+import { Redirect } from 'react-router';
 import Web3 from 'web3'
 import $ from 'jquery'
-import {useSelector} from 'react-redux'
+import {setUserState} from '../../../actions/user'
+
 import TruffleContract from '@truffle/contract'
 
 
@@ -19,7 +23,7 @@ function CreateProject(props) {
     const [projectId,setProjectId] = useState('');
     const [toProfile,setToProfile] = useState(false);
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user);
+    var user = useSelector(state => state.user);
     const projectNo = 0
     
     const handleDeposit = (e) => {
@@ -42,9 +46,7 @@ function CreateProject(props) {
         setTarget(e.target.value)
     }
 
-    var user = useSelector(state => state.user);
-    user = user.data;
-    const seekerAcc = user.user.eth;
+    const seekerAcc = user.data.user.eth;
     const web3 = new Web3("http://localhost:7545")
     const loadbc = async (event)=>{
         window.accounts = await web3.eth.getAccounts();
@@ -59,13 +61,13 @@ function CreateProject(props) {
             window.tokenInst.deployed().then(async(token)=>{
                 window.TokenInstance = token
                 console.log('Token address is:'+token.address)
-                window.totalRequiredTokens = window.TokenInstance.totalrequiredTokens()
+                window.totalRequiredTokens = await window.TokenInstance.totalrequired(seekerAcc,projectNo)
             })
         })
     }
     const setRequired = async()=>{
         window.tokenInst.deployed().then(async(token)=>{
-           await token.setRequired(seekerAcc,projectNo,target,{
+           await token.setRequired(seekerAcc,projectNo,(target-deposit),{
                from: seekerAcc,   
            })
             const numbertest = await token.required(seekerAcc,projectNo);
