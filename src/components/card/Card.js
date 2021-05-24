@@ -20,7 +20,7 @@ function Card(props) {
         <>
             <div onClick={goToProject} className={styles.card_body}>
             {toProject ? <Redirect to={`/project/${props.props._id}`}/> : <></>}
-            <img alt='card_pic' className={styles.card_img} src={`${config.BASE_URL}user/seeker/${props.props.image}`} ></img>
+            <img alt='card_pic' className={styles.card_img} src={props.props.image!='0' ? `${config.BASE_URL}user/seeker/${props.props.image}` : `images/6.jpg`} ></img>
             <div className={styles.card_content}>
                 <div className={styles.card_content_ind}> <Building className={styles.card_icon} /> {props.props.name}</div>
                 <div className={styles.card_content_ind}> <GeoAlt className={styles.card_icon} /> {props.props.address} </div>

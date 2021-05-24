@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import config from '../../../config'
 import CreateProject from '../createProject/CreateProject';
 
+import Iframe from 'react-iframe'
+
 function Seeker(props) {
 
     const [curStage,setCurStage] = useState(1);
@@ -57,6 +59,21 @@ function Seeker(props) {
         <div>
             {(
             <div className={styles.seeker_box}>
+                {/* may pass dynamic lat long */}
+                <div className={styles.mapContainer} >
+                    <Iframe url="http://127.0.0.1:5000/map/15.3173/75.7139"
+                        width="640px"
+                        height="640px"
+                        id="myId"
+                        className={styles.mapBox}
+                        display="inline-block"
+                        position="relative"/>
+                
+                    <img src={'images/map_key_eyantra.png'} className={styles.mapKey} ></img>
+                </div>
+                
+                <img src={'images/documentVerification.png'} className={styles.docImage} ></img>
+
                 {(props.data.seeker.stage==5  && props.data.seeker.project=='0' )? (<CreateProject data={props.data}/>) : null}
                 <div style={{textAlign: "center"}}>
                 {props.data.seeker.stage == 5 ? 'View all files:':null}
