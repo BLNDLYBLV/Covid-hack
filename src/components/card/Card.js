@@ -22,10 +22,10 @@ function Card(props) {
             {toProject ? <Redirect to={`/project/${props.props._id}`}/> : <></>}
             <img alt='card_pic' className={styles.card_img} src={`${config.BASE_URL}user/seeker/${props.props.image}`} ></img>
             <div className={styles.card_content}>
-                <div className={styles.card_content_ind}> <Building className={styles.card_icon} /> Company name</div>
+                <div className={styles.card_content_ind}> <Building className={styles.card_icon} /> {props.props.name}</div>
                 <div className={styles.card_content_ind}> <GeoAlt className={styles.card_icon} /> {props.props.address} </div>
                 <div className={styles.card_content_ind}> <CashCoin className={styles.card_icon} /> {props.props.deposit} </div>
-                <div className={styles.card_content_ind}> <Bullseye className={styles.card_icon} /> target</div>
+                <div className={styles.card_content_ind}> <Bullseye className={styles.card_icon} /> {props.props.totalRequiredTokens}</div>
             </div>
             </div>
         </>

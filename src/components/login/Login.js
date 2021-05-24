@@ -28,6 +28,7 @@ function Login() {
             console.log(res.data);
             var res2 = await ApiService.getUser(res.data.user._id);
             if(res2.status===200){
+                console.log(res2);
                 dispatch(setUserState(res2));
             }
         }

@@ -17,8 +17,8 @@ const axiosReq = (method, route, data) => {
 }
 
 const APIService = {
-    registerAsSeeker: (email, password, name, type, address, license) =>{
-        return axiosReq('post','auth/register', {email: email, password: password, name: name, userType: type, address: address, license: license});
+    registerAsSeeker: (email, password, name, type, address, eth) =>{
+        return axiosReq('post','auth/register', {email: email, password: password, name: name, userType: type, address: address, eth: eth});
     },
     login: async(email, password) =>{
         return await axiosReq('post','auth/login', {email: email, password: password});

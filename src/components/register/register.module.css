@@ -1,0 +1,14 @@
+.register_body{
+    width: 60%;
+    background-color: white;
+    margin: auto;
+    margin-top: 20px;
+    padding: 20px 80px;
+}
+
+.register_body input{
+    border: none;
+    border-bottom: 1px solid black;
+    padding: 7px 12px;
+    width: 20%;
+}

@@ -52,12 +52,14 @@ function Seeker(props) {
         APIService.createProject(props.data.seeker._id,10000);
     }
 
-    // console.log(props.data);
+    console.log(props.data);
     return (
         <div>
             {(
             <div className={styles.seeker_box}>
+                {(props.data.seeker.stage==5  && props.data.seeker.project=='0' )? (<CreateProject data={props.data}/>) : null}
                 <div style={{textAlign: "center"}}>
+                {props.data.seeker.stage == 5 ? 'View all files:':null}
                     <button className={`${styles.seeker_stage_btn} ${props.data.seeker.stage+1<1 ? styles.seeker_disable : null}`} onClick={() => handleCurStage(1)}>Stage 1</button>
                     <button className={`${styles.seeker_stage_btn} ${props.data.seeker.stage+1<2 ? styles.seeker_disable : null}`} onClick={() => handleCurStage(2)}>Stage 2</button>
                     <button className={`${styles.seeker_stage_btn} ${props.data.seeker.stage+1<3 ? styles.seeker_disable : null}`} onClick={() => handleCurStage(3)}>Stage 3</button>
@@ -76,7 +78,6 @@ function Seeker(props) {
                     <div className={styles.seeker_file_link}>
                         <a target="_blank" rel="noopener noreferrer" href={config.BASE_URL+`user/seeker/${fileMap[curStage]}`}>Click here to open file {curStage}</a>
                     </div>
-                    {props.data.seeker.stage==5 ? (<CreateProject data={props.data}/>) : null}
                 </div>}
                 
             </div>
