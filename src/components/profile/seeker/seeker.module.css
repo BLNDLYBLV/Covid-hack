@@ -19,3 +19,14 @@
     padding: 10px;
     text-decoration: underline;
 }
+
+.mapBox{
+    margin: 20px auto;
+}
+
+.docImage{
+    width: 640px;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+}
