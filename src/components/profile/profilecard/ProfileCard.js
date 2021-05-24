@@ -25,9 +25,12 @@ function ProfileCard() {
                     <tr key='type'>
                         <h4>Type: &nbsp; {user.user.userType==1 ? "Seeker" : "Investor"}</h4>
                     </tr>
-                    <tr key='currentStage'>
+                    {(user.user.userType==1)?(
+                        <tr key='currentStage'>
                         <h4>Current stage: &nbsp;{user.seeker.stage==5 ? "Verified" : "Not Verified"}</h4>
                     </tr>
+                    ):(null)
+                    }
                 </td>
             </tr>
             </tbody>

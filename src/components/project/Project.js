@@ -5,6 +5,10 @@ import config from '../../config'
 import APIService from '../../api.service'
 import { withRouter } from 'react-router';
 
+import { useSelector } from 'react-redux'
+import TruffleContract from '@truffle/contract'
+import SeekerPage from '../transaction/transaction_seeker'
+import Investor from '../transaction/transaction_provider'
 function Project(props) {
 
     const projectId = props.match.params.id;
@@ -15,7 +19,21 @@ function Project(props) {
         if(x<=project.seeker.stage+1)
         setCurStage(x);
     }
+    
+    var user = useSelector((state) => state.user);
+    user = user.data;
+    console.log("User next")
+    console.log(user)
+    if(user){
+        window.userType = user.user.userType;
+        window.signedIn = true;
+    } else{
+        window.signedIn = false;
+    }
+    console.log("Usertype: "+window.userType)
+    const openPanel = ()=>{
 
+    }
     useEffect(async() => {
         var res = await APIService.getProject(projectId);
         console.log(res);
@@ -33,6 +51,9 @@ function Project(props) {
             <p>Address: &nbsp; {project.project.address}</p>
             </div>
             </div>):(null)}
+        
+        
+
         </div>
         <div className={styles.project_details}>
             {(project)?(<><div className={styles.project_project_details}>
@@ -56,6 +77,17 @@ function Project(props) {
                     <button className={`${styles.seeker_stage_btn}`} > <a href={`${config.BASE_URL}user/seeker/${project.seeker.f5}`}>File 5</a> </button>
                 </div>
             </div></>) : (null)}
+            {
+        (project)?(
+        (window.signedIn)?(
+        (window.userType==1)?(
+            <SeekerPage user={user} project={project}></SeekerPage>
+       
+        ):(
+            <Investor user={user} project={project}></Investor>
+            
+        )):(null)):(null)
+    }
         </div>
         </>
     )

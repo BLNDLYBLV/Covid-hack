@@ -1,55 +1,55 @@
 .project_body{
-    width: 70%;
+    width: 70% !important;
     /* padding: 20px 20px; */
-    background-color: white;
-    margin: auto;
-    margin-top: 2%;
-    border-radius: 8px;
+    background-color: white !important;
+    margin: auto !important;
+    margin-top: 2% !important;
+    border-radius: 8px !important;
 }
 
 .project_cover_img{
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    margin-bottom: -5px;
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-    filter:contrast(80%) brightness(70%);
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+    margin-bottom: -5px !important;
+    width: 100% !important;
+    height: 350px !important;
+    object-fit: cover !important;
+    filter:contrast(80%) brightness(70%) !important;
 }
 
 .project_content{
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    padding: 20px 30px;
-    background-color: rgb(230,185,0);
+    border-bottom-left-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+    padding: 20px 30px !important;
+    background-color: rgb(230,185,0) !important;
     /* color: white; */
 }
 
 .project_content p{
     /* font-weight: bold; */
-    font-size: larger;
-    margin: 5px;
+    font-size: larger !important;
+    margin: 5px !important;
 }
 
 .project_details{
-    width: 70%;
-    padding: 20px 0px;
+    width: 70% !important;
+    padding: 20px 0px !important;
     /* background-color: white; */
-    margin: 20px auto;
+    margin: 20px auto !important;
 }
 .project_project_details{
-    background-color: white;
-    padding: 20px;
-    margin-right: 1%;
+    background-color: white !important;
+    padding: 20px !important;
+    margin-right: 1% !important;
     /* margin: 0 1.0%; */
-    display: inline-block;
-    width: 46%;
+    display: inline-block !important;
+    width: 46% !important;
 }
 .project_seeker_details{
-    background-color: white;
-    padding: 20px;
-    margin-left: 1%;
+    background-color: white !important;
+    padding: 20px !important;
+    margin-left: 1% !important;
     /* margin: 0 1.0%; */
-    display: inline-block;    
-    width: 46%;
+    display: inline-block !important;    
+    width: 46% !important;
 }
