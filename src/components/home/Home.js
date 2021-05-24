@@ -23,23 +23,10 @@ function Home() {
 
     console.log(project);
 
-<<<<<<< HEAD
-    return (        
-        <div className={styles.home_body}>
-            <div className={styles.home_need_content}>
-                <div className={`${styles.home_text} ${styles.home_text_first}`}>
-                    <div className={styles.home_text1}>Need investment?</div>
-                    <div className={styles.home_text2}>For building oxygen plants</div>
-                </div>
-                <div className={styles.home_text}>
-                    <img alt='investment_pic' className={styles.home_invest_svg} src="images/noun_invest2.png"></img>
-                </div>
-=======
     if(!project){
         return (
             <div>
     
->>>>>>> transaction part
             </div>
         )
     }
