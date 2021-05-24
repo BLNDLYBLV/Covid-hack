@@ -4,6 +4,23 @@ import $ from 'jquery'
 import {useSelector} from 'react-redux'
 import TruffleContract from '@truffle/contract'
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
 // import { Button, Header, Image, Modal } from 'semantic-ui-react'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -20,6 +37,17 @@ function SeekerPage(props) {
     // const totalRequiredTokens = 10000;//Change this also
     let tokenPrice= 1000000000000000;
     const [open,setOpen] = useState(false)
+    const [openMsg,setOpenMsg] = useState(false)
+    const [type,setType] = useState('');
+    const [message,setMessage] = useState('');
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpenMsg(false);
+      };
+
     const sanctionedDate = props.project.project.sanctionedDate;//Change this
 
     const web3 = new Web3("http://localhost:7545")
@@ -105,6 +133,9 @@ function SeekerPage(props) {
                 })
             
         })
+        setType('success')
+        setMessage('Money returned back to the investors');
+        setOpenMsg(true);
     }
 
     useEffect(loadbc,[])
@@ -138,6 +169,11 @@ function SeekerPage(props) {
             </Button>
             </DialogActions>
             </Dialog>
+            <Snackbar open={openMsg} autoHideDuration={4000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity={type}>
+                    {message}
+                </Alert>
+            </Snackbar>
             </div>
         
     )

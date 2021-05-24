@@ -13,7 +13,22 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios'
 import config from '../../config'
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 // import { Button, Header, Image, Modal } from 'semantic-ui-react'
 
 import TruffleContract from '@truffle/contract'
@@ -27,6 +42,9 @@ function Investor(props) {
     const [tokensPurchased,setTP] = useState('');
     const [tokensRequired,setTRfunc] = useState('')
     const [open,setOpen] = useState(false)
+    const [openMsg,setOpenMsg] = useState(false)
+    const [type,setType] = useState('');
+    const [message,setMessage] = useState('');
 
     const web3 = new Web3("http://localhost:7545")
     const seekerAcc = props.project.project.eth;//Change default value
@@ -36,6 +54,13 @@ function Investor(props) {
     
     
     const tokenPrice= 1000000000000000;
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpenMsg(false);
+      };
     
     const setBuyFunc = async()=>{
         const requiredTokens = await window.TokenInstance.required(seekerAcc,projectNo)
@@ -102,7 +127,10 @@ function Investor(props) {
             await window.TokenInstance.changeVariables(investorAcc,seekerAcc,projectNo,noOfTokens,{
                 from: investorAcc
             });
-            const addTransaction = await ApiService.addTransaction(seekerAcc,props.user.user.id)
+            // const addTransaction = await ApiService.addTransaction(seekerAcc,props.user.user.id)
+            setMessage(`${noOfTokens} tokens bought successfully!`);
+            setType("success")
+            setOpenMsg(true);
             console.log(window.required_tokens)
         if(noOfTokens==(window.required_tokens)){
 
@@ -118,7 +146,10 @@ function Investor(props) {
                 }
             })
             .then((res)=>{
-                console.log("Transfered ether to seeker account from smart contract")
+                setMessage("Transfered ether to seeker account from smart contract");
+                setType("success")
+                setOpenMsg(true);
+                // console.log("Transfered ether to seeker account from smart contract")
                 window.required_tokens-=noOfTokens;
             })
             .catch((e)=>{
@@ -127,7 +158,9 @@ function Investor(props) {
         }
        
         } else{
-            console.log("Enter lesser value")
+            setMessage("Enter lesser value");
+            setType("error")
+            setOpenMsg(true);
         }
         let pur1 = await window.TokenInstance.purchased(seekerAcc,projectNo,investorAcc);
         setTP(Number(pur1))
@@ -140,7 +173,10 @@ function Investor(props) {
         const moreRequired = await window.TokenInstance.required(seekerAcc,projectNo)
         console.log(Number(moreRequired))
         if(moreRequired==0){
-            console.log("Sorry cannot withdraw, the project has been sanctioned")
+            setMessage("Sorry cannot withdraw, the project has been sanctioned");
+            setType("error")
+            setOpenMsg(true);            
+            // console.log("Sorry cannot withdraw, the project has been sanctioned")
         } else{
             let purchased = await window.TokenInstance.purchased(seekerAcc,projectNo,investorAcc);
             console.log(Number(purchased))
@@ -154,7 +190,9 @@ function Investor(props) {
                 });
             }
             else{
-                console.log("Sorry you cannot withdraw ether as investment=0")
+                setMessage("Sorry you cannot withdraw ether as investment=0");
+                setType("error")
+                setOpenMsg(true);     
             }
             
         }
@@ -255,9 +293,12 @@ function Investor(props) {
        </Button>
        </DialogActions>
        </Dialog>
-       </div>
-  
-        
+        <Snackbar open={openMsg} autoHideDuration={4000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={type}>
+                {message}
+            </Alert>
+        </Snackbar>
+       </div> 
     )
 }
 
