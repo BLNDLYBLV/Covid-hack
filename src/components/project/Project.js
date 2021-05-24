@@ -4,7 +4,12 @@ import config from '../../config'
 
 import APIService from '../../api.service'
 import { withRouter } from 'react-router';
-
+import 'semantic-ui-css/semantic.min.css'
+import { Button, Header, Image, Modal } from 'semantic-ui-react'
+import { useSelector } from 'react-redux'
+import TruffleContract from '@truffle/contract'
+import SeekerPage from '../transaction/transaction_seeker'
+import Investor from '../transaction/transaction_provider'
 function Project(props) {
 
     const projectId = props.match.params.id;
@@ -15,7 +20,21 @@ function Project(props) {
         if(x<=project.seeker.stage+1)
         setCurStage(x);
     }
+    const [open,setOpen] = useState(false)
+    var user = useSelector(state => state.user);
+    user = user.data;
+    console.log("User next")
+    console.log(user)
+    if(user){
+        window.userType = user.user.userType;
+        window.signedIn = true;
+    } else{
+        window.signedIn = false;
+    }
+    console.log("Usertype: "+window.userType)
+    const openPanel = ()=>{
 
+    }
     useEffect(async() => {
         var res = await APIService.getProject(projectId);
         console.log(res);
@@ -33,6 +52,64 @@ function Project(props) {
             <p>Address: &nbsp; {project.project.address}</p>
             </div>
             </div>):(null)}
+        {(window.signedIn)?(
+        (window.userType==1)?(
+            <div style={{float: 'right',marginTop:'10px'}}>
+                 <Modal
+                open={open}
+                onClose={() => setOpen(false)}
+                onOpen={() => setOpen(true)}
+                trigger={<Button>Seeker</Button>}
+                >
+            <Modal.Header>Seeker</Modal.Header>
+
+            <Modal.Content image>
+            <Image size='huge' src='https://www.reuters.com/resizer/60bsfoAyJ-g4Vu7xY8RpLWpFkIg=/960x0/cloudfront-us-east-2.images.arcpublishing.com/reuters/KO22TXO2SBIHXCAKOWRLSBQWLU.jpg' wrapped />
+            <Modal.Description>
+            <p>
+            <SeekerPage user={user} project={project}></SeekerPage>
+            </p>
+            </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+            <Button negative onClick={() => setOpen(false)}>
+            Cancel
+            </Button>
+            </Modal.Actions>
+            </Modal>
+            </div>
+       
+       
+        ):(
+            <div style={{float: 'right',marginTop:'10px'}}>
+            <Modal
+           open={open}
+           onClose={() => setOpen(false)}
+           onOpen={() => setOpen(true)}
+           trigger={<Button>Investor</Button>}
+           >
+       <Modal.Header>Investor</Modal.Header>
+
+       <Modal.Content image>
+       <Image size='medium' src='https://www.reuters.com/resizer/60bsfoAyJ-g4Vu7xY8RpLWpFkIg=/960x0/cloudfront-us-east-2.images.arcpublishing.com/reuters/KO22TXO2SBIHXCAKOWRLSBQWLU.jpg' wrapped />
+       <Modal.Description>
+       <p>
+       <Investor user={user} project={project}></Investor>
+       </p>
+       </Modal.Description>
+       </Modal.Content>
+       <Modal.Actions>
+       <Button negative onClick={() => setOpen(false)}>
+       Cancel
+       </Button>
+       </Modal.Actions>
+       </Modal>
+       </div>
+  
+        )):(null)
+}
+        
+
         </div>
         <div className={styles.project_details}>
             {(project)?(<><div className={styles.project_project_details}>

@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import {useDispatch,useSelector} from 'react-redux'
+import React, { useState, useEffect } from 'react'
 
 import styles from './createProject.module.css'
 import APIService from '../../../api.service'
-import { Redirect } from 'react-router';
-import {setUserState} from '../../../actions/user'
+import Web3 from 'web3'
+import $ from 'jquery'
+import {useSelector} from 'react-redux'
+import TruffleContract from '@truffle/contract'
 
 
 function CreateProject(props) {
-
-    const [deposit,setDeposit] = useState('');
+    
+    const [deposit,setDeposit] = useState();
     const [file,setFile] = useState('');
     const [name,setName] = useState('');
     const [address,setAddress] = useState('');
@@ -19,6 +20,8 @@ function CreateProject(props) {
     const [toProfile,setToProfile] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    const projectNo = 0
+    
     const handleDeposit = (e) => {
         setDeposit(e.target.value)
     }
@@ -39,13 +42,47 @@ function CreateProject(props) {
         setTarget(e.target.value)
     }
 
+    var user = useSelector(state => state.user);
+    user = user.data;
+    const seekerAcc = user.user.eth;
+    const web3 = new Web3("http://localhost:7545")
+    const loadbc = async (event)=>{
+        window.accounts = await web3.eth.getAccounts();
+        connectToContract();
+    }
+    const connectToContract = async()=>{
+        $.getJSON('/Token.json',(token)=>{
+            window.tokenInst = TruffleContract(token)
+            console.log("Amaan ba")
+            console.log(window.tokenInst)
+            window.tokenInst.setProvider("http://localhost:7545")
+            window.tokenInst.deployed().then(async(token)=>{
+                window.TokenInstance = token
+                console.log('Token address is:'+token.address)
+                window.totalRequiredTokens = window.TokenInstance.totalrequiredTokens()
+            })
+        })
+    }
+    const setRequired = async()=>{
+        window.tokenInst.deployed().then(async(token)=>{
+           await token.setRequired(seekerAcc,projectNo,target,{
+               from: seekerAcc,   
+           })
+            const numbertest = await token.required(seekerAcc,projectNo);
+
+            console.log("set number is: "+numbertest)
+        
+    })
+}
+    useEffect(loadbc,[])
+
     const handleSubmit = async (e) => {
+        await setRequired()
         console.log(props);
         e.preventDefault();
         var data = new FormData();
         data.append('file',file);
-        var result1 = await APIService.createProject(name,target,description,address,props.data.user._id,deposit,'kzdhgkhjabgd');
-        setProjectId(result1.data.id);
+        var result1 = await APIService.createProject(name,target,description,address,props.data.user._id,deposit,target);
         if(result1.status==200){
             var res2 =await APIService.uploadProjectPhoto(result1.data.id,data);
             if(res2.status==200){
