@@ -1,11 +1,12 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useSelector,useDispatch } from 'react-redux';
 import styles from './profile.module.css'
 import ProfileCard from './profilecard/ProfileCard'
 import Seeker from './seeker/Seeker'
-import Investor from './investor/Investor'
 
 function Profile() {
+
+    const dispatch = useDispatch();
 
     var user = useSelector(state => state.user);
     user = user.data;
@@ -13,7 +14,7 @@ function Profile() {
     return (
         <div className={styles.profile_body}>
             <ProfileCard />
-            {(user.user.userType==1)? <Seeker data={user}/> : <Investor data={user}/>}
+            {(user.user.userType==1)? <Seeker data={user}/> : (null)}
         </div>
     )
 }

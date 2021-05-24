@@ -8,6 +8,14 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 
+// import { Button, Header, Image, Modal } from 'semantic-ui-react'
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -21,13 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// import { Button, Header, Image, Modal } from 'semantic-ui-react'
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 function SeekerPage(props) {
     const userState = useSelector(state => state.user);
@@ -95,7 +97,7 @@ function SeekerPage(props) {
 
             //Logic to calculate token price at the end of return
             let dateNow = Date.now()
-            console.log(typeof dateNow)
+            console.log(typeof sanctionedDate)
             let timeElapsed = dateNow-sanctionedDate;//Change
             let diffDays = Math.ceil(timeElapsed / (1000 * 60 * 60 * 24)); 
 

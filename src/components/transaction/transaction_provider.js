@@ -17,6 +17,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 
+import TruffleContract from '@truffle/contract';
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -31,10 +33,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 // import { Button, Header, Image, Modal } from 'semantic-ui-react'
 
-import TruffleContract from '@truffle/contract'
 // import { Dialog } from '@material-ui/core'
 
 function Investor(props) {
+
+    const classes = useStyles();
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+    
+    // const handleClose = (event, reason) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+    
+    //     setOpen(false);
+    // };
+
     const userState = useSelector(state => state.user);
     const [providerAcc,setProviderAcc] = useState('');
     const [isBuyAllowed,setBuy] = useState(true);
@@ -142,7 +158,7 @@ function Investor(props) {
                 url: config.BASE_URL+'project/sanction',
                 headers: {"Content-Type" : "application/json"},
                 data: {
-                    project: props.project.id
+                    project: props.project.project._id
                 }
             })
             .then((res)=>{
@@ -249,6 +265,11 @@ function Investor(props) {
     // })}
     return(
         <div style={{float: 'right',marginTop:'10px'}}>
+            {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success">
+                This is a success message!
+                </Alert>
+            </Snackbar> */}
             <Button variant="contained" color="primary" onClick={() => setOpen(true)}>Investor</Button>
             <Dialog
            open={open}
@@ -264,10 +285,10 @@ function Investor(props) {
        <img style={{height:"260px",width:"260px",marginLeft:"140px"}} src={"https://www.reuters.com/resizer/aNcj2Z2FOLjaOBlN8TCOLeF18Hs=/960x0/cloudfront-us-east-2.images.arcpublishing.com/reuters/QFS5CLPP3BNR3HJ2YF3DZRLVRA.jpg"}/>
 
             <ul>
-                <li style={{fontSize: '20px'}}>Tokens owned: {tokensPurchased}</li>
+                <li style={{fontSize: '20px'}}>Tokens owned by you: {tokensPurchased}</li>
             </ul>
             <ul>
-                <li style={{fontSize: '20px'}}>Tokens required: {tokensRequired}</li>
+                <li style={{fontSize: '20px'}}>Remaining tokens required: {tokensRequired}</li>
             </ul>
             <div style={{display:isBuyAllowed?'block':'none'}}>
             <p style={{fontSize: '18px'}}>Please enter the amount of tokens you wish to purchase</p>
